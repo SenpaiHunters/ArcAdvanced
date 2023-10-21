@@ -2,14 +2,14 @@
 body {
   font-family: Arial, sans-serif;
   background: #fffced;
+  margin: 0;
 }
 
 header {
   background-color: #f3b241;
   height: 565px;
-  width: auto;
   color: #fff;
-  text-align: center;
+
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -18,9 +18,10 @@ header {
   background-image: url("https://private-user-images.githubusercontent.com/103985728/277084802-993e5c97-d43f-4843-9265-9034594e3360.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE2OTc4NjM0NjgsIm5iZiI6MTY5Nzg2MzE2OCwicGF0aCI6Ii8xMDM5ODU3MjgvMjc3MDg0ODAyLTk5M2U1Yzk3LWQ0M2YtNDg0My05MjY1LTkwMzQ1OTRlMzM2MC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBSVdOSllBWDRDU1ZFSDUzQSUyRjIwMjMxMDIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDIzMTAyMVQwNDM5MjhaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNjdiZjQ2MjUxNGIxNTQ0NjIwMTg4YmRiN2QwMmRjYjZiOGI0MmY3NmY1ZDM0MDNlZGVlOWYzNGI0ZmQyMzAwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.ooomm6Aa0Xhb6sT_OsQJJOgBhvSW-ctKn3ml8KVFUGQ");
   background-position: center top;
   background-size: cover;
-  background-repeat: no-repeat;
-  position: relative; /* Position relative for pseudo-element */
+
   z-index: 2; /* Increase z-index to bring it to the front */
+  border: none;
+  outline: none;
 }
 
 header::before {
@@ -31,15 +32,9 @@ header::before {
   left: 0;
   right: 0;
   bottom: 0;
-  opacity: 0.2; /* Adjust the opacity to make the grain more visible */
+  opacity: 0.3; /* Adjust the opacity to make the grain more visible */
   pointer-events: none;
   z-index: 1; /* Increase z-index to bring it to the front */
-}
-
-header img {
-  width: 200px; /* Adjust the width as needed */
-  height: auto; /* Maintain aspect ratio */
-  z-index: 2; /* Increase z-index to bring it to the front */
 }
 
 .arcTitle,
