@@ -1,0 +1,204 @@
+/* Add your CSS styles here */
+body {
+  font-family: Arial, sans-serif;
+  background: #fffced;
+}
+
+header {
+  background-color: #f3b241;
+  height: 565px;
+  width: auto;
+  color: #fff;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 40px;
+  background-image: url("https://private-user-images.githubusercontent.com/103985728/277084802-993e5c97-d43f-4843-9265-9034594e3360.png?jwt=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTEiLCJleHAiOjE2OTc4NjM0NjgsIm5iZiI6MTY5Nzg2MzE2OCwicGF0aCI6Ii8xMDM5ODU3MjgvMjc3MDg0ODAyLTk5M2U1Yzk3LWQ0M2YtNDg0My05MjY1LTkwMzQ1OTRlMzM2MC5wbmc_WC1BbXotQWxnb3JpdGhtPUFXUzQtSE1BQy1TSEEyNTYmWC1BbXotQ3JlZGVudGlhbD1BS0lBSVdOSllBWDRDU1ZFSDUzQSUyRjIwMjMxMDIxJTJGdXMtZWFzdC0xJTJGczMlMkZhd3M0X3JlcXVlc3QmWC1BbXotRGF0ZT0yMDIzMTAyMVQwNDM5MjhaJlgtQW16LUV4cGlyZXM9MzAwJlgtQW16LVNpZ25hdHVyZT0zNjdiZjQ2MjUxNGIxNTQ0NjIwMTg4YmRiN2QwMmRjYjZiOGI0MmY3NmY1ZDM0MDNlZGVlOWYzNGI0ZmQyMzAwJlgtQW16LVNpZ25lZEhlYWRlcnM9aG9zdCZhY3Rvcl9pZD0wJmtleV9pZD0wJnJlcG9faWQ9MCJ9.ooomm6Aa0Xhb6sT_OsQJJOgBhvSW-ctKn3ml8KVFUGQ");
+  background-position: center top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  position: relative; /* Position relative for pseudo-element */
+  z-index: 2; /* Increase z-index to bring it to the front */
+}
+
+header::before {
+  content: "";
+  background: url("https://github.com/SenpaiHunters/Pictures/blob/main/SpotOn%20Pics/Resources/grain-12100x1500.png?raw=true");
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.2; /* Adjust the opacity to make the grain more visible */
+  pointer-events: none;
+  z-index: 1; /* Increase z-index to bring it to the front */
+}
+
+header img {
+  width: 200px; /* Adjust the width as needed */
+  height: auto; /* Maintain aspect ratio */
+  z-index: 2; /* Increase z-index to bring it to the front */
+}
+
+.arcTitle,
+.arcCH {
+  align-self: stretch;
+  color: #fffcec;
+  text-align: center;
+  z-index: 2;
+}
+
+.arcTitle {
+  font-family: "Marlin Soft SQ", sans-serif;
+  font-size: 70px;
+  font-style: normal;
+  font-weight: 800;
+  letter-spacing: -2.8px;
+  margin-bottom: -5px; /* Adjust the negative margin to reduce spacing */
+}
+
+.arcCH {
+  font-family: "Apple Garamond", serif;
+  font-size: 60px;
+  font-style: italic;
+  font-weight: 400;
+  margin-top: -10px; /* Adjust the negative margin to reduce spacing */
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: stretch;
+  z-index: 2;
+}
+
+.headerButton {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: linear-gradient(180deg, #fff 0%, #fff 115.86%), #ffb229;
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
+  outline: none;
+  color: #f3b341;
+  outline: none;
+  border: none;
+  text-align: center;
+  font-family: Marlin Soft SQ;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  z-index: 2;
+}
+
+.headerButton:hover {
+  transform: scale(1.05);
+  border-radius: 10px;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out,
+    border-radius 0.3s ease-in-out;
+}
+
+button:not(.headerButton) {
+  display: flex;
+  max-width: 200px;
+  padding: 12px 16px;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 8px;
+  background: linear-gradient(180deg, #ffb229 0%, #f3b341 115.86%), #fff;
+
+  box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.2);
+  outline: none;
+
+  color: #fffcec;
+  outline: none;
+  border: none;
+
+  text-align: center;
+  font-family: Marlin Soft SQ;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 800;
+  line-height: normal;
+  z-index: 2; /* Increase z-index to bring it to the front */
+}
+
+button:hover {
+  transform: scale(1.05);
+  border-radius: 10px;
+  transition: background-color 0.3s ease-in-out, transform 0.3s ease-in-out,
+    border-radius 0.3s ease-in-out;
+}
+
+.content-container {
+  display: flex;
+  margin: 20px;
+}
+
+.content {
+  flex: 1;
+  color: #323232;
+  font-family: Inter Soft;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  padding: 20px;
+}
+
+/* Media query to make images larger on larger screens */
+@media (min-width: 768px) {
+  .content-container .image img {
+    max-width: 800px; /* Adjust the image size for larger screens */
+  }
+}
+
+.image {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.logo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 40px;
+  margin-top: -120px;
+}
+
+.Title {
+  flex: 1 0 0;
+  color: #323232;
+  font-family: Apple Garamond;
+  font-size: 40px;
+  font-style: italic;
+  font-weight: 700;
+  line-height: normal;
+}
+
+.Title,
+p {
+  padding: 10px;
+}
+
+p {
+  flex: 1 0 0;
+  color: #323232;
+  font-family: Inter Soft;
+  font-size: 18px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  margin-top: -40px;
+}
