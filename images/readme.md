@@ -5,5 +5,3 @@ I'll put every image file into here so i can use!
 ![image](https://github.com/SenpaiHunters/ArcAdvanced/assets/103985728/a610b1f7-93c8-4454-82e2-47de69d475bb)
 
 ![image](https://github.com/SenpaiHunters/ArcAdvanced/assets/103985728/6d61f713-d4c8-43e0-aa81-4fbcd8cf2b94)
-
-![image](https://github.com/SenpaiHunters/ArcAdvanced/assets/103985728/c90e92c3-df9c-42bc-b374-eeb4f15b2aa6)
