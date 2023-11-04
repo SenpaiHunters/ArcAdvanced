@@ -9,11 +9,11 @@ domains=(
 	"api.segment.io"
 	"sentry.io"
 	"*.ingest.sentry.io"
+	# "0298668.ingest.sentry.io"
 	"segment.com"
 	"cdn-settings.segment.com"
 )
 
-# "0298668.ingest.sentry.io" for now 
 # Define color codes and messages
 red="\033[31m"
 green="\033[32m"
@@ -29,34 +29,49 @@ block_domains() {
 		return
 	fi
 
-	sudo cp /etc/hosts /etc/hosts.backup
+	if ! sudo cp /etc/hosts /etc/hosts.backup; then
+		echo -e "${red}Error: Failed to create a backup of /etc/hosts.${reset}"
+		exit 1
+	fi
 
 	for domain in "${domains[@]}"; do
 		echo -e "$blocked_msg $domain"
-		echo "127.0.0.1 $domain" | sudo tee -a /etc/hosts >/dev/null
+		if ! echo "127.0.0.1 $domain" | sudo tee -a /etc/hosts >/dev/null; then
+			echo -e "${red}Error: Failed to add $domain to /etc/hosts.${reset}"
+			exit 1
+		fi
 	done
 
 	echo -e "${green}All domains are now blocked.${reset}"
-	echo "To unblock these domains, run: $0 unblock"
+	echo "To unblock these domains, run: curl -s -L https://raw.githubusercontent.com/SenpaiHunters/ArcAdvanced/main/ArcTelemetryBlocking/ArcTel.sh | bash -s unblock"
 }
 
 unblock_domains() {
 	if [ -f /etc/hosts.backup ]; then
-		echo -e "$unblocked_msg"
-		sudo mv /etc/hosts.backup /etc/hosts
+		if ! sudo sed -i -e "/127.0.0.1/ d" /etc/hosts; then
+			echo -e "${red}Error: Failed to unblock domains in /etc/hosts.${reset}"
+			exit 1
+		fi
+
+		if ! sudo mv /etc/hosts.backup /etc/hosts; then
+			echo -e "${red}Error: Failed to restore /etc/hosts from backup.${reset}"
+			exit 1
+		fi
+
 		for domain in "${domains[@]}"; do
 			echo -e "$unblocked_msg $domain"
 		done
-		echo "To block these domains again, run: $0 block"
+		echo "To block these domains, run: curl -s -L https://raw.githubusercontent.com/SenpaiHunters/ArcAdvanced/main/ArcTelemetryBlocking/ArcTel.sh | bash -s block"
 	else
 		echo -e "$not_blocked_msg"
+		echo "To block these domains, run: curl -s -L https://raw.githubusercontent.com/SenpaiHunters/ArcAdvanced/main/ArcTelemetryBlocking/ArcTel.sh | bash -s block"
 	fi
 }
 
+
+# Input validation
 if [ "$1" == "block" ]; then
 	block_domains
 elif [ "$1" == "unblock" ]; then
 	unblock_domains
-else
-	echo "Usage: $0 [block|unblock]"
 fi
