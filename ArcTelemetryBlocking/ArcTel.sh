@@ -8,11 +8,12 @@ domains=(
 	"segment.io"
 	"api.segment.io"
 	"sentry.io"
-	"0298668.ingest.sentry.io"
+	"*.ingest.sentry.io"
 	"segment.com"
 	"cdn-settings.segment.com"
 )
 
+# "0298668.ingest.sentry.io" for now 
 # Define color codes and messages
 red="\033[31m"
 green="\033[32m"
