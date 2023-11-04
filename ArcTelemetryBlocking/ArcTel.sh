@@ -28,9 +28,9 @@ block_domains() {
     done
 
     if $success; then
-        echo "All domains blocked successfully."
+        echo -e "\\033[32mAll domains are now blocked. Your privacy is protected!\\033[0m"
     else
-        echo "Some domains failed to block."
+        echo -e "\\033[31mSome domains failed to block. Please check your system configuration.\\033[0m"
     fi
 }
 
@@ -62,15 +62,17 @@ unblock_domains() {
     done
 
     if $success; then
-        echo "All domains unblocked successfully."
+        echo -e "\\033[32mAll domains are now unblocked. Your internet access is restored!\\033[0m"
     else
-        echo "Some domains failed to unblock."
+        echo -e "\\033[31mSome domains failed to unblock. Please check your system configuration.\\033[0m"
     fi
 }
 
 if [ "$1" == "block" ]; then
+    echo "Blocking telemetry domains..."
     block_domains
 elif [ "$1" == "unblock" ]; then
+    echo "Unblocking telemetry domains..."
     unblock_domains
 else
     echo "Usage: $0 [block|unblock]"
