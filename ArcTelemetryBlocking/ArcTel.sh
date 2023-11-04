@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Define the URL
+arc_tel_url="https://raw.githubusercontent.com/SenpaiHunters/ArcAdvanced/main/ArcTelemetryBlocking/ArcTel.sh"
+
 # Define the domains array
 domains=(
 	"launchdarkly.com"
@@ -43,7 +46,7 @@ block_domains() {
 	done
 
 	echo -e "${green}All domains are now blocked.${reset}"
-	echo "To unblock these domains, run: curl -s -L https://raw.githubusercontent.com/SenpaiHunters/ArcAdvanced/main/ArcTelemetryBlocking/ArcTel.sh | bash -s unblock"
+	echo "To unblock these domains, run: curl -s -L $arc_tel_url | bash -s unblock"
 }
 
 unblock_domains() {
@@ -61,13 +64,12 @@ unblock_domains() {
 		for domain in "${domains[@]}"; do
 			echo -e "$unblocked_msg $domain"
 		done
-		echo "To block these domains, run: curl -s -L https://raw.githubusercontent.com/SenpaiHunters/ArcAdvanced/main/ArcTelemetryBlocking/ArcTel.sh | bash -s block"
+		echo "To block these domains, run: curl -s -L $arc_tel_url | bash -s block"
 	else
 		echo -e "$not_blocked_msg"
-		echo "To block these domains, run: curl -s -L https://raw.githubusercontent.com/SenpaiHunters/ArcAdvanced/main/ArcTelemetryBlocking/ArcTel.sh | bash -s block"
+		echo "To block these domains, run: curl -s -L $arc_tel_url | bash -s block"
 	fi
 }
-
 
 # Input validation
 if [ "$1" == "block" ]; then
