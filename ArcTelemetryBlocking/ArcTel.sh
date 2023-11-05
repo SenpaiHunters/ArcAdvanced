@@ -59,6 +59,10 @@ block_domains() {
 
 	echo -e "${green}All domains are now blocked.${reset}"
 	echo -e "To unblock these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s unblock${reset}"
+
+	# Flush DNS cache and restart mDNSResponder
+	sudo dscacheutil -flushcache
+	sudo killall -HUP mDNSResponder
 }
 
 unblock_domains() {
@@ -74,6 +78,10 @@ unblock_domains() {
 
 		echo -e "All domains are now unblocked."
 		echo -e "To block these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s block${reset}"
+
+		# Flush DNS cache and restart mDNSResponder
+		sudo dscacheutil -flushcache
+		sudo killall -HUP mDNSResponder
 	else
 		echo -e "${red}❌ Domains are not currently blocked.${reset}"
 		echo -e "To block these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s block${reset}"
