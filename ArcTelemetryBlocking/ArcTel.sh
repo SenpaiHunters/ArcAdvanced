@@ -43,26 +43,26 @@ create_backup() {
 }
 
 block_domains() {
-	if [ -f "$BACKUP_FILE" ]; then
-		error "Domains are already blocked."
-		return
-	fi
+  if [ -f "$BACKUP_FILE" ]; then
+    error "Domains are already blocked."
+    return
+  fi
 
-	create_backup
+  create_backup
 
-	for domain in "${domains[@]}"; do
-		echo -e "${green}✅ Blocking domain: ${white}$domain${reset}"
-		if ! echo "127.0.0.1 $domain" | sudo tee -a "$HOSTS_FILE" >/dev/null; then
-			error "Failed to add $domain to $HOSTS_FILE."
-		fi
-	done
+  for domain in "${domains[@]}"; do
+    echo -e "${green}✅ Blocking domain: ${white}$domain${reset}"
+    if ! echo "127.0.0.1 $domain" | sudo tee -a "$HOSTS_FILE" >/dev/null; then
+      error "Failed to add $domain to $HOSTS_FILE."
+    fi
+  done
 
-	echo -e "${green}All domains are now blocked.${reset}"
-	echo -e "To unblock these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s unblock${reset}"
+  echo -e "${green}All domains are now blocked.${reset}"
+  echo -e "To unblock these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s unblock${reset}"
 
-	# Flush DNS cache and restart mDNSResponder
-	sudo dscacheutil -flushcache
-	sudo killall -HUP mDNSResponder
+  # Flush DNS cache and restart mDNSResponder
+  sudo dscacheutil -flushcache
+  sudo killall -HUP mDNSResponder
 }
 
 unblock_domains() {
@@ -88,11 +88,24 @@ unblock_domains() {
 	fi
 }
 
+check_domains() {
+  for domain in "${domains[@]}"; do
+    echo -n "Checking domain: $domain... "
+    if ping -c 1 $domain &>/dev/null; then
+      echo "Blocked"
+    else
+      echo "Not Blocked"
+    fi
+  done
+}
+
 # Input validation
 if [ "$1" == "block" ]; then
 	block_domains
 elif [ "$1" == "unblock" ]; then
 	unblock_domains
+elif [ "$1" == "check" ]; then
+	check_domains
 else
-	error "Invalid argument. Use 'block' or 'unblock'."
+	error "Invalid argument. Use 'block', 'unblock', or 'check'."
 fi
