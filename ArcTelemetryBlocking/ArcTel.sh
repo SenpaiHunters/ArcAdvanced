@@ -5,7 +5,7 @@ ARC_TEL_URL="https://raw.githubusercontent.com/SenpaiHunters/ArcAdvanced/main/Ar
 HOSTS_FILE="/etc/hosts"
 BACKUP_FILE="/etc/hosts.backup"
 
-# Define the domains array as a regular indexed array
+# Domains to be blocked/unblocked
 domains=(
 	"launchdarkly.com"
 	"mobile.launchdarkly.com"
@@ -13,25 +13,25 @@ domains=(
 	"segment.io"
 	"api.segment.io"
 	"sentry.io"
-	"*.ingest.sentry.io"
+	"0298668.ingest.sentry.io"
 	"segment.com"
 	"cdn-settings.segment.com"
 )
 
-# Colors
-purple="\033[94m" # Purple
+# Colors for console output
 red="\033[91m" # Red
 white="\033[97m" # White
 green="\033[92m" # Green
 blue="\033[94m" # Blue
 reset="\033[0m"
 
-# Functions
+# Function to display an error message and exit the script
 error() {
-	echo -e "${red}Error: $1${reset}" 1>&2
+	printf "${red}Error: $1${reset}\n" 1>&2
 	exit 1
 }
 
+# Function to create a backup of the hosts file
 create_backup() {
 	if [ -f "$BACKUP_FILE" ]; then
 		error "Backup file $BACKUP_FILE already exists."
@@ -42,6 +42,18 @@ create_backup() {
 	fi
 }
 
+# Function to flush the DNS cache and restart mDNSResponder
+flush_dns() {
+  sudo dscacheutil -flushcache
+  sudo killall -HUP mDNSResponder
+}
+
+# Function to log domain operations
+log_domain_operation() {
+  printf "${green}✅ $1 domain: ${white}$2${reset}\n"
+}
+
+# Function to block the domains
 block_domains() {
   if [ -f "$BACKUP_FILE" ]; then
     error "Domains are already blocked."
@@ -51,20 +63,19 @@ block_domains() {
   create_backup
 
   for domain in "${domains[@]}"; do
-    echo -e "${green}✅ Blocking domain: ${white}$domain${reset}"
+    log_domain_operation "Blocking" "$domain"
     if ! echo "127.0.0.1 $domain" | sudo tee -a "$HOSTS_FILE" >/dev/null; then
       error "Failed to add $domain to $HOSTS_FILE."
     fi
   done
 
-  echo -e "${green}All domains are now blocked.${reset}"
-  echo -e "To unblock these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s unblock${reset}"
+  printf "${green}All domains are now blocked.${reset}\n"
+  printf "To unblock these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s unblock${reset}\n"
 
-  # Flush DNS cache and restart mDNSResponder
-  sudo dscacheutil -flushcache
-  sudo killall -HUP mDNSResponder
+  flush_dns
 }
 
+# Function to unblock the domains
 unblock_domains() {
 	if [ -f "$BACKUP_FILE" ]; then
 		for domain in "${domains[@]}"; do
@@ -73,39 +84,35 @@ unblock_domains() {
 		sudo mv "$BACKUP_FILE" "$HOSTS_FILE" || error "Failed to restore $HOSTS_FILE from backup"
 
 		for domain in "${domains[@]}"; do
-			echo -e "${green}✅ Unblocking domain: ${white}$domain${reset}"
+			log_domain_operation "Unblocking" "$domain"
 		done
 
-		echo -e "All domains are now unblocked."
-		echo -e "To block these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s block${reset}"
+		printf "All domains are now unblocked.\n"
+		printf "To block these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s block${reset}\n"
 
-		# Flush DNS cache and restart mDNSResponder
-		sudo dscacheutil -flushcache
-		sudo killall -HUP mDNSResponder
+		flush_dns
 	else
-		echo -e "${red}❌ Domains are not currently blocked.${reset}"
-		echo -e "To block these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s block${reset}"
+		printf "${red}❌ Domains are not currently blocked.${reset}\n"
+		printf "To block these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s block${reset}\n"
 	fi
 }
 
+# Function to check if the domains are blocked
 check_domains() {
   for domain in "${domains[@]}"; do
-    echo -n "Checking domain: $domain... "
+    printf "Checking domain: $domain... "
     if ping -c 1 $domain &>/dev/null; then
-      echo "Blocked"
+      printf "Blocked\n"
     else
-      echo "Not Blocked"
+      printf "Not Blocked\n"
     fi
   done
 }
 
 # Input validation
-if [ "$1" == "block" ]; then
-	block_domains
-elif [ "$1" == "unblock" ]; then
-	unblock_domains
-elif [ "$1" == "check" ]; then
-	check_domains
-else
-	error "Invalid argument. Use 'block', 'unblock', or 'check'."
-fi
+case "$1" in
+  "block") block_domains ;;
+  "unblock") unblock_domains ;;
+  "check") check_domains ;;
+  *) error "Invalid argument. Use 'block', 'unblock', or 'check'." ;;
+esac
