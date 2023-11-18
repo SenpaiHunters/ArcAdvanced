@@ -68,7 +68,7 @@ block_domains() {
 unblock_domains() {
 	if [ -f "$BACKUP_FILE" ]; then
 		for domain in "${domains[@]}"; do
-			sudo sed -i -e "/127.0.0.1 $domain/ d" "$HOSTS_FILE" || error "Failed to unblock domains in $HOSTS_FILE."
+			sudo sed -i '' -e "/$domain/d" "$HOSTS_FILE" || error "Failed to unblock domains in $HOSTS_FILE."
 		done
 		sudo mv "$BACKUP_FILE" "$HOSTS_FILE" || error "Failed to restore $HOSTS_FILE from backup"
 
