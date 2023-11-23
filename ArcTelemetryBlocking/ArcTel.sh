@@ -56,17 +56,17 @@ log_domain_operation() {
 # Function to block the domains
 block_domains() {
   if [ -f "$BACKUP_FILE" ]; then
-    error "Domains are already blocked."
-    return
+	error "Domains are already blocked."
+	return
   fi
 
   create_backup
 
   for domain in "${domains[@]}"; do
-    log_domain_operation "Blocking" "$domain"
-    if ! echo "127.0.0.1 $domain" | sudo tee -a "$HOSTS_FILE" >/dev/null; then
-      error "Failed to add $domain to $HOSTS_FILE."
-    fi
+	log_domain_operation "Blocking" "$domain"
+	if ! echo "127.0.0.1 $domain" | sudo tee -a "$HOSTS_FILE" >/dev/null; then
+	  error "Failed to add $domain to $HOSTS_FILE."
+	fi
   done
 
   printf "${green}All domains are now blocked.${reset}\n"
@@ -75,17 +75,20 @@ block_domains() {
   flush_dns
 }
 
+# Function to unblock a specific domain
+unblock_domain() {
+  domain="$1"
+  sudo sed -i '' -e "/$domain/d" "$HOSTS_FILE" || error "Failed to unblock $domain in $HOSTS_FILE."
+  log_domain_operation "Unblocking" "$domain"
+}
+
 # Function to unblock the domains
 unblock_domains() {
 	if [ -f "$BACKUP_FILE" ]; then
 		for domain in "${domains[@]}"; do
-			sudo sed -i '' -e "/$domain/d" "$HOSTS_FILE" || error "Failed to unblock domains in $HOSTS_FILE."
+			unblock_domain "$domain"
 		done
 		sudo mv "$BACKUP_FILE" "$HOSTS_FILE" || error "Failed to restore $HOSTS_FILE from backup"
-
-		for domain in "${domains[@]}"; do
-			log_domain_operation "Unblocking" "$domain"
-		done
 
 		printf "All domains are now unblocked.\n"
 		printf "To block these domains, run:\n${blue}curl -s -L ${ARC_TEL_URL} | bash -s block${reset}\n"
@@ -100,12 +103,12 @@ unblock_domains() {
 # Function to check if the domains are blocked
 check_domains() {
   for domain in "${domains[@]}"; do
-    printf "Checking domain: $domain... "
-    if ping -c 1 $domain &>/dev/null; then
-      printf "Blocked\n"
-    else
-      printf "Not Blocked\n"
-    fi
+	printf "Checking domain: $domain... "
+	if ping -c 1 $domain &>/dev/null; then
+	  printf "Blocked\n"
+	else
+	  printf "Not Blocked\n"
+	fi
   done
 }
 
@@ -113,6 +116,7 @@ check_domains() {
 case "$1" in
   "block") block_domains ;;
   "unblock") unblock_domains ;;
+  "unblock-fallback") sudo sed -i '' '/launchdarkly.com/d;/mobile.launchdarkly.com/d;/clientstream.launchdarkly.com/d;/segment.io/d;/api.segment.io/d;/sentry.io/d;/0298668.ingest.sentry.io/d;/segment.com/d;/cdn-settings.segment.com/d' $HOSTS_FILE && flush_dns ;;
   "check") check_domains ;;
-  *) error "Invalid argument. Use 'block', 'unblock', or 'check'." ;;
+  *) error "Invalid argument. Use 'block', 'unblock', 'unblock-fallback', or 'check'." ;;
 esac
