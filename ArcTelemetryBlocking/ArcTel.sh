@@ -7,9 +7,6 @@ BACKUP_FILE="/etc/hosts.backup"
 
 # Domains to be blocked/unblocked
 domains=(
-	"launchdarkly.com"
-	"mobile.launchdarkly.com"
-	"clientstream.launchdarkly.com"
 	"segment.io"
 	"api.segment.io"
 	"sentry.io"
